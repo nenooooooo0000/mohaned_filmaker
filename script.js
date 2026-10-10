@@ -258,24 +258,36 @@ window.filterPortfolio = function(type) {
     if(event && event.target) event.target.classList.add('active');
     renderPortfolio(type);
 };
-
 window.openModal = function(title, cat, videoUrl, desc) {
     document.getElementById('modalTitle').textContent = title;
     document.getElementById('modalCategory').textContent = cat;
     document.getElementById('modalDesc').textContent = desc;
     
+    // تحويل رابط الفيسبوك إلى مشغل مدمج يفتح داخل الموقع
+    const encodedUrl = encodeURIComponent(videoUrl);
+    const fbEmbedIframe = `https://www.facebook.com/plugins/video.php?href=${encodedUrl}&show_text=false&width=560`;
+
     document.getElementById('modalVideoBox').innerHTML = `
-        <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:100%; color:#FFF; text-align:center; padding:30px;">
-            <p style="margin-bottom:20px; font-size:1.1rem; color:var(--accent-gold); font-weight:800;">اضغط لمشاهدة العمل المباشر على فيسبوك / السوشيال ميديا:</p>
-            <a href="${videoUrl}" target="_blank" class="btn-primary" style="text-decoration:none; padding:15px 30px; font-size:0.9rem;">▶ WATCH FULL VIDEO</a>
-        </div>`;
+        <iframe 
+            src="${fbEmbedIframe}" 
+            width="100%" 
+            height="100%" 
+            style="border:none;overflow:hidden;border-radius:8px;" 
+            scrolling="no" 
+            frameborder="0" 
+            allowfullscreen="true" 
+            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
+        </iframe>`;
+        
     document.getElementById('videoModal').classList.remove('hidden');
 };
 
 window.closeModal = function() {
     document.getElementById('videoModal').classList.add('hidden');
+    // إيقاف تشغيل الفيديو فور إغلاق النافذة
     document.getElementById('modalVideoBox').innerHTML = '';
 };
+
 
 window.toggleAIChat = function() { 
     const chat = document.getElementById('aiChatBox');
